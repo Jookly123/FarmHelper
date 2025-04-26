@@ -134,6 +134,11 @@ public class AutoGodPot implements IFeature {
 
     @Override
     public void stop() {
+        if (!Minecraft.getMinecraft().isCallingFromMinecraftThread()) {
+            Minecraft.getMinecraft().addScheduledTask(this::stop);
+            return;
+        }
+
         resetStates();
         PlayerUtils.closeScreen();
         LogUtils.sendWarning("[Auto God Pot] Disabled!");
